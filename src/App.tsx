@@ -1,11 +1,11 @@
+import DataTable from './components/DataTable.tsx';
+
 function App() {
 
   return (
-    <>
-      <h2>
-        Hello All!
-      </h2>
-    </>
+    <div>
+      <DataTable />
+    </div>
   )
 }
 
