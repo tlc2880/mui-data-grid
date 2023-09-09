@@ -1,32 +1,75 @@
-import {useState, useEffect} from 'react'
-import {DataGrid} from '@material-ui/data-grid'
+import { useEffect, useState } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
-const columns = [
-  {field: 'id', headerName: 'ID'},
-  {field: 'title', headerName: 'Title', width: 300},
-  {field: 'body', headerName: 'Body', width: 600}
-]
+import axios from "axios";
 
-const DataTable = () => {
+type userType = {
+  id: number,
+  name: string, 
+  username: string, 
+  email: string, 
+  phone: string, 
+  website: string
+}
+// function createData(
+//   id: number,
+//   name: string, 
+//   username: string, 
+//   email: string, 
+//   phone: string, 
+//   website: string
+//   ) {
+//   return { id, name, username, email, phone, website };
+// }
 
-  const [tableData, setTableData] = useState([])
+// const rows = [];
 
- useEffect(() => {
-   fetch("https://jsonplaceholder.typicode.com/posts")
-    .then((data) => data.json())
-    .then((data) => setTableData(data))
- })
+export default function DynamicTable() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/users")
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [data]);
 
   return (
-    <div style={{height: 700, width: '100%'}}>
-      <DataGrid 
-        rows={tableData}
-        columns={columns}
-        pageSize={12}
-        checkboxSelection
-      />
-    </div>
-  )
+    <TableContainer component={Paper}>
+      <Table aria-label="simple table" stickyHeader>
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell align="right">Username</TableCell>
+            <TableCell align="right">Email</TableCell>
+            <TableCell align="right">Phone</TableCell>
+            <TableCell align="right">Website</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((row: userType) => (
+            <TableRow key={row.id}>
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell align="right">{row.username}</TableCell>
+              <TableCell align="right">{row.email}</TableCell>
+              <TableCell align="right">{row.phone}</TableCell>
+              <TableCell align="right">{row.website}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 }
-
-export default DataTable
