@@ -31,13 +31,21 @@ interface TablePaginationActionsProps {
   ) => void;
 }
 
+type addressType = {
+  street: string,
+  suite: string,
+  city: string,
+  zipcode: number
+}
+
 type userType = {
   id: number,
   name: string, 
   username: string, 
-  email: string, 
+  email: string,
   phone: string, 
-  website: string
+  website: string,
+  address: addressType
 }
 
 function TablePaginationActions(props: TablePaginationActionsProps) {
@@ -96,6 +104,50 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
+function createData(
+  id: number,
+  name: string,
+  username: string,
+  email: string,
+  phone: string, 
+  website: string,
+//  address: addressType
+  ) {
+    return {
+      id,
+      name,
+      username,
+      email,
+      phone, 
+      website,
+      // address: {
+      //   street: "Ellsworth Summit",
+      //   suite: "Suite 729",
+      //   city: "Aliyaview",
+      //   zipcode: "45169"
+      // },
+  };
+}
+
+function Row(props: { row: ReturnType<typeof createData> }) {
+  const { row } = props;
+
+  return (
+    <>
+      <TableRow>
+        <TableCell component="th" scope="row">
+          {row.id}
+        </TableCell>
+        <TableCell align="right">{row.name}</TableCell>
+        <TableCell align="right">{row.username}</TableCell>
+        <TableCell align="right">{row.email}</TableCell>
+        <TableCell align="right">{row.phone}</TableCell>
+        <TableCell align="right">{row.website}</TableCell>
+      </TableRow>
+    </>
+  );
+}
+
 export default function DataTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(3);
@@ -110,7 +162,7 @@ export default function DataTable() {
       .catch((error) => {
         console.log(error);
       });
-  }, [rows]);
+  }, []);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -136,9 +188,12 @@ export default function DataTable() {
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
+            <TableCell>Id</TableCell>
+            <TableCell align="right">Name</TableCell>
             <TableCell align="right">Username</TableCell>
             <TableCell align="right">Email</TableCell>
+            <TableCell align="right">Phone</TableCell>
+            <TableCell align="right">Website</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -146,17 +201,7 @@ export default function DataTable() {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row: userType) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.username}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.email}
-              </TableCell>
-            </TableRow>
+            <Row key={row.id} row={row} />
           ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
@@ -168,7 +213,7 @@ export default function DataTable() {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[3, 6, 9, { label: 'All', value: -1 }]}
-              colSpan={3}
+              colSpan={6}
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
