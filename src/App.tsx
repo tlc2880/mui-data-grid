@@ -1,12 +1,20 @@
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import DataTable from './components/DataTable';
 
-function App() {
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
+function App() {
   return (
-    <div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
       <DataTable />
-    </div>
-  )
+    </ThemeProvider>
+  );
 }
 
 export default App;
