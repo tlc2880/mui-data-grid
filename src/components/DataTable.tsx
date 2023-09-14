@@ -5,14 +5,14 @@ import {
   ChangeEvent
 } from 'react';
 import axios from "axios";
-import { useTheme } from '@mui/material/styles';
+import { useTheme, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import TableSortLabel from "@mui/material/TableSortLabel";
 import Table from '@mui/material/Table';
 import Collapse from "@mui/material/Collapse";
 import TableBody from '@mui/material/TableBody';
 import TableHead from "@mui/material/TableHead";
-import TableCell from '@mui/material/TableCell';
-import TableSortLabel from "@mui/material/TableSortLabel";
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
@@ -41,7 +41,11 @@ type addressType = {
   street: string,
   suite: string,
   city: string,
-  zipcode: number
+  zipcode: number,
+  geo: {
+    lat: string,
+    lng: string
+  }
 }
 
 type companyType = {
@@ -146,15 +150,15 @@ function Row(props: { row: ReturnType<typeof createData> }) {
 
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <StyledTableRow sx={{ "& > *": { borderBottom: "unset" } }}>
 
-        <TableCell component="th" scope="row">
+        <StyledTableCell component="th" scope="row">
           {row.id}
-        </TableCell>
-        <TableCell align="right" style={{ width: 225 }}>{row.name}</TableCell>
-        <TableCell align="right" style={{ width: 225 }}>{row.username}</TableCell>
-        <TableCell align="right" style={{ width: 225 }}>{row.email}</TableCell>
-        <TableCell align="right" style={{ width: 75 }}>
+        </StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>{row.name}</StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>{row.username}</StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>{row.email}</StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 75 }}>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -162,10 +166,10 @@ function Row(props: { row: ReturnType<typeof createData> }) {
           >
             {openAddress ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
-        </TableCell>
-        <TableCell align="right" style={{ width: 225 }}>{row.phone}</TableCell>
-        <TableCell align="right" style={{ width: 225 }}>{row.website}</TableCell>
-        <TableCell align="right" style={{ width: 75 }}>
+        </StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>{row.phone}</StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>{row.website}</StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 75 }}>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -173,10 +177,10 @@ function Row(props: { row: ReturnType<typeof createData> }) {
           >
             {openCompany ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        </StyledTableCell>
+      </StyledTableRow>
+      <StyledTableRow>
+        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={openAddress} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -184,32 +188,34 @@ function Row(props: { row: ReturnType<typeof createData> }) {
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
-                  <TableRow>
-                    <TableCell>Street</TableCell>
-                    <TableCell align="right">Suite</TableCell>
-                    <TableCell align="right">City</TableCell>
-                    <TableCell align="right">Zipcode</TableCell>
-                  </TableRow>
+                  <StyledTableRow>
+                    <StyledTableCell>Street</StyledTableCell>
+                    <StyledTableCell align="right">Suite</StyledTableCell>
+                    <StyledTableCell align="right">City</StyledTableCell>
+                    <StyledTableCell align="right">Zipcode</StyledTableCell>
+                    <StyledTableCell align="right">Geolocation</StyledTableCell>
+                  </StyledTableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
+                  <StyledTableRow>
+                    <StyledTableCell component="th" scope="row">
                       {row.address.street}
-                    </TableCell>
-                    <TableCell align="right">{row.address.suite}</TableCell>
-                    <TableCell align="right">{row.address.city}</TableCell>
-                    <TableCell align="right">{row.address.zipcode}</TableCell>
-                  </TableRow>
+                    </StyledTableCell>
+                    <StyledTableCell align="right" style={{ width: 200 }}>{row.address.suite}</StyledTableCell>
+                    <StyledTableCell align="right" style={{ width: 200 }}>{row.address.city}</StyledTableCell>
+                    <StyledTableCell align="right" style={{ width: 200 }}>{row.address.zipcode}</StyledTableCell>
+                    <StyledTableCell align="right" style={{ width: 250 }}><strong>Lat: </strong>{row.address.geo.lat}
+                      <b>, Long: </b>{row.address.geo.lng}</StyledTableCell>
+                  </StyledTableRow>
                 </TableBody>
               </Table>
             </Box>
           </Collapse>
-        </TableCell>
-      </TableRow>
+        </StyledTableCell>
+      </StyledTableRow>
 
-
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+      <StyledTableRow>
+        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={openCompany} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -217,30 +223,49 @@ function Row(props: { row: ReturnType<typeof createData> }) {
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
-                  <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell align="right">Catch Phrase</TableCell>
-                    <TableCell align="right">BS</TableCell>
-                  </TableRow>
+                  <StyledTableRow>
+                    <StyledTableCell>Name</StyledTableCell>
+                    <StyledTableCell align="right">Catch Phrase</StyledTableCell>
+                    <StyledTableCell align="right">BS</StyledTableCell>
+                  </StyledTableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
+                  <StyledTableRow>
+                    <StyledTableCell component="th" scope="row">
                       {row.company.name}
-                    </TableCell>
-                    <TableCell align="right">{row.company.catchPhrase}</TableCell>
-                    <TableCell align="right">{row.company.bs}</TableCell>
-                  </TableRow>
+                    </StyledTableCell>
+                    <StyledTableCell align="right">{row.company.catchPhrase}</StyledTableCell>
+                    <StyledTableCell align="right">{row.company.bs}</StyledTableCell>
+                  </StyledTableRow>
                 </TableBody>
               </Table>
             </Box>
           </Collapse>
-        </TableCell>
-      </TableRow>
-
+        </StyledTableCell>
+      </StyledTableRow>
     </>
   );
 }
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 export default function DataTable() {
   const [page, setPage] = useState(0);
@@ -295,28 +320,48 @@ export default function DataTable() {
     }
   };
 
+  const sortAlphaArray = (arr: userType[], orderBy: orderType) => {
+    const sortedData = [...arr].sort((a, b) => {
+      if (orderBy === 'asc') {
+          return a.username.localeCompare(b.username);
+      } else {
+          return b.username.localeCompare(a.username);
+      }
+    });
+    return sortedData;
+  }
+
   const handleSortRequest = () => {
     setRows(sortArray(rows, orderDirection));
     setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
   };
+
+  const handleAlphaSort = () => {
+    setRows(sortAlphaArray(rows, orderDirection));
+    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
+  }
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
-          <TableCell align="left" onClick={handleSortRequest}>
+          <StyledTableCell align="left" onClick={handleSortRequest}>
+            <TableSortLabel active={true} direction={orderDirection}>
+              Id
+            </TableSortLabel>
+            </StyledTableCell>
+            <StyledTableCell align="right">Name</StyledTableCell>
+            <StyledTableCell align="right" onClick={handleAlphaSort}>
               <TableSortLabel active={true} direction={orderDirection}>
-                Id
+                Username
               </TableSortLabel>
-            </TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Username</TableCell>
-            <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Address</TableCell>
-            <TableCell align="right">Phone</TableCell>
-            <TableCell align="right">Website</TableCell>
-            <TableCell align="right">Company</TableCell>
+            </StyledTableCell>
+            <StyledTableCell align="right">Email</StyledTableCell>
+            <StyledTableCell align="right">Address</StyledTableCell>
+            <StyledTableCell align="right">Phone</StyledTableCell>
+            <StyledTableCell align="right">Website</StyledTableCell>
+            <StyledTableCell align="right">Company</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -328,7 +373,7 @@ export default function DataTable() {
           ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
+              <StyledTableCell colSpan={6} />
             </TableRow>
           )}
         </TableBody>
