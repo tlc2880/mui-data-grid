@@ -11,8 +11,11 @@ const darkTheme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
+      <h1>Webpack, Material UI, Typicode, Typescript</h1>
       <CssBaseline />
-      <DataTable />
+      <div className="container">
+        <DataTable />
+      </div>
     </ThemeProvider>
   );
 }
