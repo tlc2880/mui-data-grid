@@ -1,17 +1,17 @@
-import {  
-    useState, 
-} from 'react';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import Collapse from "@mui/material/Collapse";
-import TableBody from '@mui/material/TableBody';
-import TableHead from "@mui/material/TableHead";
-import IconButton from '@mui/material/IconButton';
-import Typography from "@mui/material/Typography";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { useState } from 'react'
+import {
+  Box,
+  Table,
+  Collapse,
+  TableBody,
+  TableHead,
+  IconButton,
+  Typography,
+} from '@mui/material'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import { addressType, companyType } from './Table.types'
-import { StyledTableCell, StyledTableRow } from './styledTable';
+import { StyledTableCell, StyledTableRow } from './styledTable'
 
 function createData(
   id: number,
@@ -19,26 +19,26 @@ function createData(
   username: string,
   email: string,
   address: addressType,
-  phone: string, 
+  phone: string,
   website: string,
   company: companyType
-  ) {
-    return {
-      id,
-      name,
-      username,
-      email,
-      address,
-      phone, 
-      website,
-      company
-  };
+) {
+  return {
+    id,
+    name,
+    username,
+    email,
+    address,
+    phone,
+    website,
+    company,
+  }
 }
 
 export default function Row(props: { row: ReturnType<typeof createData> }) {
-  const { row } = props;
-  const [openAddress, setOpenAddress] = useState(false);
-  const [openCompany, setOpenCompany] = useState(false);
+  const { row } = props
+  const [openAddress, setOpenAddress] = useState(false)
+  const [openCompany, setOpenCompany] = useState(false)
 
   return (
     <>
@@ -46,9 +46,15 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
         <StyledTableCell component="th" scope="row">
           {row.id}
         </StyledTableCell>
-        <StyledTableCell align="right" style={{ width: 225 }}>{row.name}</StyledTableCell>
-        <StyledTableCell align="right" style={{ width: 225 }}>{row.username}</StyledTableCell>
-        <StyledTableCell align="right" style={{ width: 225 }}>{row.email}</StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>
+          {row.name}
+        </StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>
+          {row.username}
+        </StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>
+          {row.email}
+        </StyledTableCell>
         <StyledTableCell align="right" style={{ width: 75 }}>
           <IconButton
             aria-label="expand row"
@@ -58,8 +64,12 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
             {openAddress ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </StyledTableCell>
-        <StyledTableCell align="right" style={{ width: 225 }}>{row.phone}</StyledTableCell>
-        <StyledTableCell align="right" style={{ width: 225 }}>{row.website}</StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>
+          {row.phone}
+        </StyledTableCell>
+        <StyledTableCell align="right" style={{ width: 225 }}>
+          {row.website}
+        </StyledTableCell>
         <StyledTableCell align="right" style={{ width: 75 }}>
           <IconButton
             aria-label="expand row"
@@ -71,7 +81,10 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
         </StyledTableCell>
       </StyledTableRow>
       <StyledTableRow>
-        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <StyledTableCell
+          style={{ paddingBottom: 0, paddingTop: 0 }}
+          colSpan={6}
+        >
           <Collapse in={openAddress} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -92,11 +105,21 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
                     <StyledTableCell component="th" scope="row">
                       {row.address.street}
                     </StyledTableCell>
-                    <StyledTableCell align="right" style={{ width: 200 }}>{row.address.suite}</StyledTableCell>
-                    <StyledTableCell align="right" style={{ width: 200 }}>{row.address.city}</StyledTableCell>
-                    <StyledTableCell align="right" style={{ width: 200 }}>{row.address.zipcode}</StyledTableCell>
-                    <StyledTableCell align="right" style={{ width: 250 }}><strong>Lat: </strong>{row.address.geo.lat}
-                      <b>, Long: </b>{row.address.geo.lng}</StyledTableCell>
+                    <StyledTableCell align="right" style={{ width: 200 }}>
+                      {row.address.suite}
+                    </StyledTableCell>
+                    <StyledTableCell align="right" style={{ width: 200 }}>
+                      {row.address.city}
+                    </StyledTableCell>
+                    <StyledTableCell align="right" style={{ width: 200 }}>
+                      {row.address.zipcode}
+                    </StyledTableCell>
+                    <StyledTableCell align="right" style={{ width: 250 }}>
+                      <strong>Lat: </strong>
+                      {row.address.geo.lat}
+                      <b>, Long: </b>
+                      {row.address.geo.lng}
+                    </StyledTableCell>
                   </StyledTableRow>
                 </TableBody>
               </Table>
@@ -106,7 +129,10 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
       </StyledTableRow>
 
       <StyledTableRow>
-        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
+        <StyledTableCell
+          style={{ paddingBottom: 0, paddingTop: 0 }}
+          colSpan={3}
+        >
           <Collapse in={openCompany} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -116,7 +142,9 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
                 <TableHead>
                   <StyledTableRow>
                     <StyledTableCell>Name</StyledTableCell>
-                    <StyledTableCell align="right">Catch Phrase</StyledTableCell>
+                    <StyledTableCell align="right">
+                      Catch Phrase
+                    </StyledTableCell>
                     <StyledTableCell align="right">BS</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -125,8 +153,12 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
                     <StyledTableCell component="th" scope="row">
                       {row.company.name}
                     </StyledTableCell>
-                    <StyledTableCell align="right">{row.company.catchPhrase}</StyledTableCell>
-                    <StyledTableCell align="right">{row.company.bs}</StyledTableCell>
+                    <StyledTableCell align="right">
+                      {row.company.catchPhrase}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {row.company.bs}
+                    </StyledTableCell>
                   </StyledTableRow>
                 </TableBody>
               </Table>
@@ -135,5 +167,5 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
         </StyledTableCell>
       </StyledTableRow>
     </>
-  );
+  )
 }
