@@ -1,7 +1,7 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import DataTable from './components/DataTable';
-import Container from "@mui/material/Container";
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
+import createTheme from '@mui/material/styles/createTheme'
+import { CssBaseline, Container } from '@mui/material'
+import DataTable from './components/table/DataTable'
 import IMAGE from './react.png'
 import LOGO from './React.svg'
 
@@ -9,7 +9,7 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
-});
+})
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
         <DataTable />
       </Container>
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,95 +1,92 @@
-import React, { 
-  MouseEvent, 
-  useEffect, 
-  useState 
-} from 'react';
-import axios from "axios";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableHead from "@mui/material/TableHead";
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import Paper from '@mui/material/Paper';
+import React, { MouseEvent, useEffect, useState } from 'react'
+import axios from 'axios'
+import {
+  TableSortLabel,
+  Table,
+  TableBody,
+  TableHead,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TablePagination,
+  Paper,
+} from '@mui/material'
 import { userType } from './Table.types'
-import { StyledTableCell, StyledTableRow } from './styledTable';
-import Row from './Row';
+import { StyledTableCell, StyledTableRow } from './styledTable'
+import Row from './Row'
 import TablePaginationActions from './TablePaginationActions'
 
 export default function DataTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(3);
-  const [rows, setRows] = useState<userType[]>([]);
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState(3)
+  const [rows, setRows] = useState<userType[]>([])
 
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/users")
+      .get('https://jsonplaceholder.typicode.com/users')
       .then((res) => {
-        setRows(res.data);
+        setRows(res.data)
       })
       .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+        console.log(error)
+      })
+  }, [])
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
   const handleChangePage = (
-    // @ts-ignore
     event: MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
+    newPage: number
   ) => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
 
-  type orderType = "asc" | "desc";
+  type orderType = 'asc' | 'desc'
 
-  const [orderDirection, setOrderDirection] = React.useState<orderType>("asc");
+  const [orderDirection, setOrderDirection] = React.useState<orderType>('asc')
 
   const sortArray = (arr: userType[], orderBy: orderType) => {
     switch (orderBy) {
-      case "asc":
+      case 'asc':
       default:
         return arr.sort((a: userType, b: userType) =>
           a.id > b.id ? 1 : b.id > a.id ? -1 : 0
-        );
-      case "desc":
+        )
+      case 'desc':
         return arr.sort((a: userType, b: userType) =>
           a.id < b.id ? 1 : b.id < a.id ? -1 : 0
-        );
+        )
     }
-  };
+  }
 
   const handleSortRequest = () => {
-    setRows(sortArray(rows, orderDirection));
-    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
-  };
+    setRows(sortArray(rows, orderDirection))
+    setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc')
+  }
 
   const sortAlphaArray = (arr: userType[], orderBy: orderType) => {
     const sortedData = [...arr].sort((a: userType, b: userType) => {
       if (orderBy === 'asc') {
-        return a.username.localeCompare(b.username);
+        return a.username.localeCompare(b.username)
       } else {
-         return b.username.localeCompare(a.username);
+        return b.username.localeCompare(a.username)
       }
-    });
-    return sortedData;
+    })
+    return sortedData
   }
 
   const handleAlphaSort = () => {
-    setRows(sortAlphaArray(rows, orderDirection));
-    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
+    setRows(sortAlphaArray(rows, orderDirection))
+    setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc')
   }
 
   return (
@@ -150,5 +147,5 @@ export default function DataTable() {
         </TableFooter>
       </Table>
     </TableContainer>
-  );
+  )
 }
